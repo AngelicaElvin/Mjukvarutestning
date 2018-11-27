@@ -45,9 +45,15 @@ import string
     \/_____/\/__/ \/_/\/____/
 """# =================================================================== #
 
-long_string = """
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut auctor risus ut tincidunt iaculis. Nullam vestibulum cursus arcu, eleifend tempus ex facilisis vitae. Nullam egestas euismod eros eget egestas. In pulvinar justo sit amet dapibus aliquam. Vivamus tincidunt mi nec iaculis ultrices. Nulla pulvinar et metus nec ullamcorper. Proin bibendum ligula ut auctor laoreet. Curabitur tincidunt, ex non laoreet facilisis, diam odio faucibus ligula, ac commodo lectus nisl ut lacus. Praesent et est ac ipsum vestibulum facilisis sit amet eget justo. Etiam quis felis ut neque consectetur consectetur at sit amet metus. Curabitur molestie justo nec massa tincidunt, condimentum suscipit dui euismod.
+long_string = """Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a iaculis diam. Sed et ante ante. Aliquam quis turpis iaculis, vehicula nisl non, mollis elit. In hac habitasse platea dictumst. Nulla vestibulum lorem facilisis porta laoreet. Duis vulputate eros ac augue maximus, et bibendum dui luctus. Aliquam nisl lorem, pulvinar at turpis a, tempus porta est. Cras risus mi, fermentum laoreet tempor vitae, scelerisque a turpis. Donec eu interdum ligula, vel ullamcorper arcu. Nam facilisis urna ultricies nunc iaculis, quis volutpat urna aliquet. Duis in felis sit amet tortor rutrum facilisis. Donec non pellentesque elit. Sed sit amet gravida lorem. Mauris odio ante, interdum eu convallis eu, volutpat malesuada velit. Aliquam sed tincidunt justo.
 """
+
+try:
+    global long_bad_string
+    with open("blns.txt", "r") as myfile:
+        long_bad_string = myfile.read()
+except e:
+    print "failed to read blns.txt"
 
 """# =================================================================== #
  ____    ___                    __          ____                       ______                __
@@ -60,7 +66,6 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut auctor risus ut tinc
 """# =================================================================== #
 
 class TestFlashtext_init(unittest.TestCase):
-
 
     def setUp(self):
         print "run " + self._testMethodName
@@ -80,7 +85,6 @@ class TestFlashtext_init(unittest.TestCase):
 # =================================================================== #
 
 class TestFlashtext_contains(unittest.TestCase):
-
 
     def setUp(self):
         print "run " + self._testMethodName
@@ -102,7 +106,6 @@ class TestFlashtext_contains(unittest.TestCase):
     def test_contains_extreme(self):
         # borderline case
         self.assertTrue("" not in self.kp, "'' cannot be contained")
-        global long_string
         # extreme case
         self.kp.add_keyword(long_string)
         self.assertTrue(long_string in self.kp, "We can have long keywords")
@@ -131,7 +134,6 @@ class TestFlashtext_contains(unittest.TestCase):
 
 class TestFlashtext_setitem(unittest.TestCase):
 
-
     def setUp(self):
         print "run " + self._testMethodName
         self.kp = KeywordProcessor()
@@ -152,7 +154,6 @@ class TestFlashtext_setitem(unittest.TestCase):
         self.assertEquals(len(self.kp), 0, "we do not add empty string")
         self.assertEquals(self.kp[""], None, "cannot access with empty string as key")
         # long string
-        global long_string
         self.kp[long_string] = long_string
         self.assertEquals(len(self.kp), 1, "we added the long string as keyword")
         self.assertEquals(self.kp[long_string], long_string, "we can access the long string")
@@ -161,7 +162,6 @@ class TestFlashtext_setitem(unittest.TestCase):
 # =================================================================== #
 
 class TestFlashtext_set_non_word_boundaries(unittest.TestCase):
-
 
     def setUp(self):
         print "run " + self._testMethodName
@@ -189,8 +189,10 @@ class TestFlashtext_set_non_word_boundaries(unittest.TestCase):
 
 # =================================================================== #
 
-class TestFlashtext_add_keyword(unittest.TestCase):
-
+class TestFlashtext_add_get_keyword(unittest.TestCase):
+    """
+    this allowed, have two functions tested in one test?
+    """
     def setUp(self):
         print "run " + self._testMethodName
         self.kp = KeywordProcessor()
@@ -201,24 +203,46 @@ class TestFlashtext_add_keyword(unittest.TestCase):
 
 
     def test_add_keyword_basic(self):
-        pass
+        self.kp.add_keyword("foo")
+        self.assertTrue("foo" in self.kp, "can add basic keyword")
+
+    def test_add_keyword_extreme(self):
+        self.kp.add_keyword("")
+        self.assertTrue(len(self.kp) is 0, "did not add empty string")
+
+        self.kp.add_keyword(long_string)
+        self.assertTrue(long_string in self.kp, "can add long keywords")
+
+    def test_add_keyword_clean_basic(self):
+        self.kp.add_keyword("foo", "bar")
+        self.assertTrue(self.kp["foo"] is "bar", "bar is clean word for foo")
+
+    def test_add_keyword_clean_extreme(self):
+        self.kp.add_keyword("", "")
+        self.assertTrue(len(self.kp) is 0, "cannot add empty string")
+
+        self.kp.add_keyword(long_string)
+        self.assertTrue(self.kp[long_string] is long_string, "can access clean word for a long string")
 
 
 # =================================================================== #
 
-class TestFlashtext_get_keyword(unittest.TestCase):
+"""
+Can we skip this and use the test above for both functions?
+"""
+# class TestFlashtext_get_keyword(unittest.TestCase):
 
-    def setUp(self):
-        print "run " + self._testMethodName
-        self.kp = KeywordProcessor()
+#     def setUp(self):
+#         print "run " + self._testMethodName
+#         self.kp = KeywordProcessor()
 
 
-    def tearDown(self):
-        print "OK"
+#     def tearDown(self):
+#         print "OK"
 
 
-    def test_get_keyword_basic(self):
-        pass
+#     def test_get_keyword_basic(self):
+#         pass
 
 
 # =================================================================== #
@@ -235,7 +259,22 @@ class TestFlashtext_add_keywords_from_dict(unittest.TestCase):
 
 
     def test_add_keywords_from_dict_basic(self):
-        pass
+        self.kp.add_keywords_from_dict({"color": ["yellow", "red"]})
+        self.assertTrue("yellow" in self.kp, "yellow was added as a keyword")
+        self.assertTrue("red" in self.kp, "red was added as a keyword")
+        self.assertTrue(self.kp["yellow"] is "color", "keyword maps to clean word")
+        self.assertTrue(self.kp["red"] is "color", "keyword maps to clean word")
+
+
+    def test_add_keywords_from_dict_extreme(self):
+        self.kp.add_keywords_from_dict({"": [""]})
+        self.assertTrue(len(self.kp) is 0, "cannot add emtpy string")
+
+        self.kp.add_keywords_from_dict(
+            {long_string: [long_string]}
+        )
+        self.assertTrue(long_string in self.kp, "keyword added")
+        self.assertTrue(self.kp[long_string] is long_string, "long keyword maps to long clean word")
 
 
 # =================================================================== #
@@ -252,7 +291,24 @@ class TestFlashtext_add_keywords_from_list(unittest.TestCase):
 
 
     def test_add_keywords_from_list_basic(self):
-        pass
+        mlist = ["one", "two", "three", "four", "five"]
+        self.kp.add_keywords_from_list(mlist)
+        [self.assertTrue(item in self.kp, "keyword not added") for item in mlist]
+
+
+    def test_add_keywords_from_list_error(self):
+        # argument must be a list
+        with self.assertRaises(AttributeError):
+            self.kp.add_keywords_from_list("im a string")
+
+
+    def test_add_keywords_from_list_extreme(self):
+        self.kp.add_keywords_from_list(["", ""])
+        self.assertTrue(len(self.kp) is 0, "cannot add empty string")
+
+        mlist = [long_string, long_string + " abc"]
+        self.kp.add_keywords_from_list(mlist)
+        [self.assertTrue(item in self.kp, "keyword not added") for item in mlist]
 
 
 # =================================================================== #
@@ -269,7 +325,16 @@ class TestFlashtext_get_all_keywords(unittest.TestCase):
 
 
     def test_get_all_keywords_basic(self):
-        pass
+        basic_list = ["one", "two", "three"]
+        self.kp.add_keywords_from_list(basic_list)
+        [self.assertTrue(key in basic_list, "keyword was retrived ok") for key in self.kp.get_all_keywords()]
+
+    def test_get_all_keywords_extreme(self):
+        self.kp.add_keyword("")
+        self.assertTrue(len(self.kp.get_all_keywords()) is 0, "cannot add empty string")
+
+        self.kp.add_keyword("long", long_string)
+        self.assertTrue(long_string == self.kp.get_all_keywords()["long"], "long string as keyword")
 
 
 """# =================================================================== #
@@ -281,6 +346,8 @@ class TestFlashtext_get_all_keywords(unittest.TestCase):
    \ `\___x___/\ \_\ \_\ \_\ \__\ \____\    \ \____/\ \____//\_/\_\      \ \_\ \____\/\____/ \ \__\/\____/
     '\/__//__/  \/_/\/_/\/_/\/__/\/____/     \/___/  \/___/ \//\/_/       \/_/\/____/\/___/   \/__/\/___/
 """# =================================================================== #
+
+
 
 
 
