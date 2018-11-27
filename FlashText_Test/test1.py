@@ -1,14 +1,63 @@
+# coding: utf-8
+
+"""# =================================================================== #
+ ____    ___                     __      ______                __        ______                __
+/\  _`\ /\_ \                   /\ \    /\__  _\              /\ \__    /\__  _\              /\ \__
+\ \ \L\_\//\ \      __      ____\ \ \___\/_/\ \/    __   __  _\ \ ,_\   \/_/\ \/    __    ____\ \ ,_\
+ \ \  _\/ \ \ \   /'__`\   /',__\\ \  _ `\ \ \ \  /'__`\/\ \/'\\ \ \/      \ \ \  /'__`\ /',__\\ \ \/
+  \ \ \/   \_\ \_/\ \L\.\_/\__, `\\ \ \ \ \ \ \ \/\  __/\/>  </ \ \ \_      \ \ \/\  __//\__, `\\ \ \_
+   \ \_\   /\____\ \__/.\_\/\____/ \ \_\ \_\ \ \_\ \____\/\_/\_\ \ \__\      \ \_\ \____\/\____/ \ \__\
+    \/_/   \/____/\/__/\/_/\/___/   \/_/\/_/  \/_/\/____/\//\/_/  \/__/       \/_/\/____/\/___/   \/__/
+"""# =================================================================== #
+
+"""
+@author Christoffer Gustfsson, Filip Björklund
+@group  11
+@desc   This is a test of the Python library FlashText:
+        https://github.com/vi3k6i5/flashtext
+"""
+
+
+"""# =================================================================== #
+ ______                                     __
+/\__  _\                                   /\ \__
+\/_/\ \/     ___ ___   _____     ___   _ __\ \ ,_\
+   \ \ \   /' __` __`\/\ '__`\  / __`\/\`'__\ \ \/
+    \_\ \__/\ \/\ \/\ \ \ \L\ \/\ \L\ \ \ \/ \ \ \_
+    /\_____\ \_\ \_\ \_\ \ ,__/\ \____/\ \_\  \ \__\
+    \/_____/\/_/\/_/\/_/\ \ \/  \/___/  \/_/   \/__/
+                         \ \_\
+                          \/_/
+"""# =================================================================== #
+
 import unittest
 from keywords import *
 import string
 
-# =================================================================== #
+
+"""# =================================================================== #
+ __  __  __         ___
+/\ \/\ \/\ \__  __ /\_ \
+\ \ \ \ \ \ ,_\/\_\\//\ \
+ \ \ \ \ \ \ \/\/\ \ \ \ \
+  \ \ \_\ \ \ \_\ \ \ \_\ \_
+   \ \_____\ \__\\ \_\/\____\
+    \/_____/\/__/ \/_/\/____/
+"""# =================================================================== #
 
 long_string = """
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut auctor risus ut tincidunt iaculis. Nullam vestibulum cursus arcu, eleifend tempus ex facilisis vitae. Nullam egestas euismod eros eget egestas. In pulvinar justo sit amet dapibus aliquam. Vivamus tincidunt mi nec iaculis ultrices. Nulla pulvinar et metus nec ullamcorper. Proin bibendum ligula ut auctor laoreet. Curabitur tincidunt, ex non laoreet facilisis, diam odio faucibus ligula, ac commodo lectus nisl ut lacus. Praesent et est ac ipsum vestibulum facilisis sit amet eget justo. Etiam quis felis ut neque consectetur consectetur at sit amet metus. Curabitur molestie justo nec massa tincidunt, condimentum suscipit dui euismod.
 """
 
-# =================================================================== #
+"""# =================================================================== #
+ ____    ___                    __          ____                       ______                __
+/\  _`\ /\_ \                  /\ \        /\  _`\                    /\__  _\              /\ \__
+\ \ \L\ \//\ \      __      ___\ \ \/'\    \ \ \L\ \    ___   __  _   \/_/\ \/    __    ____\ \ ,_\   ____
+ \ \  _ <'\ \ \   /'__`\   /'___\ \ , <     \ \  _ <'  / __`\/\ \/'\     \ \ \  /'__`\ /',__\\ \ \/  /',__\
+  \ \ \L\ \\_\ \_/\ \L\.\_/\ \__/\ \ \\`\    \ \ \L\ \/\ \L\ \/>  </      \ \ \/\  __//\__, `\\ \ \_/\__, `\
+   \ \____//\____\ \__/.\_\ \____\\ \_\ \_\   \ \____/\ \____//\_/\_\      \ \_\ \____\/\____/ \ \__\/\____/
+    \/___/ \/____/\/__/\/_/\/____/ \/_/\/_/    \/___/  \/___/ \//\/_/       \/_/\/____/\/___/   \/__/\/___/
+"""# =================================================================== #
 
 class TestFlashtext_init(unittest.TestCase):
 
@@ -135,8 +184,6 @@ class TestFlashtext_set_non_word_boundaries(unittest.TestCase):
         self.kp.set_non_word_boundaries(set(string.letters))
         self.kp.add_keyword("is")
         found = self.kp.extract_keywords("wow this is12 a sentence")
-        print "HERE IT COMES"
-        print found
         self.assertTrue("is" in found, "keyword doesnt include numbers")
 
 
@@ -154,6 +201,7 @@ class TestFlashtext_add_keyword(unittest.TestCase):
 
 
     def test_add_keyword_basic(self):
+        pass
 
 
 # =================================================================== #
@@ -170,6 +218,7 @@ class TestFlashtext_get_keyword(unittest.TestCase):
 
 
     def test_get_keyword_basic(self):
+        pass
 
 
 # =================================================================== #
@@ -186,6 +235,7 @@ class TestFlashtext_add_keywords_from_dict(unittest.TestCase):
 
 
     def test_add_keywords_from_dict_basic(self):
+        pass
 
 
 # =================================================================== #
@@ -202,6 +252,7 @@ class TestFlashtext_add_keywords_from_list(unittest.TestCase):
 
 
     def test_add_keywords_from_list_basic(self):
+        pass
 
 
 # =================================================================== #
@@ -218,10 +269,22 @@ class TestFlashtext_get_all_keywords(unittest.TestCase):
 
 
     def test_get_all_keywords_basic(self):
+        pass
+
+
+"""# =================================================================== #
+ __      __  __          __               ____                       ______                __
+/\ \  __/\ \/\ \      __/\ \__           /\  _`\                    /\__  _\              /\ \__
+\ \ \/\ \ \ \ \ \___ /\_\ \ ,_\    __    \ \ \L\ \    ___   __  _   \/_/\ \/    __    ____\ \ ,_\   ____
+ \ \ \ \ \ \ \ \  _ `\/\ \ \ \/  /'__`\   \ \  _ <'  / __`\/\ \/'\     \ \ \  /'__`\ /',__\\ \ \/  /',__\
+  \ \ \_/ \_\ \ \ \ \ \ \ \ \ \_/\  __/    \ \ \L\ \/\ \L\ \/>  </      \ \ \/\  __//\__, `\\ \ \_/\__, `\
+   \ `\___x___/\ \_\ \_\ \_\ \__\ \____\    \ \____/\ \____//\_/\_\      \ \_\ \____\/\____/ \ \__\/\____/
+    '\/__//__/  \/_/\/_/\/_/\/__/\/____/     \/___/  \/___/ \//\/_/       \/_/\/____/\/___/   \/__/\/___/
+"""# =================================================================== #
+
 
 
 # =================================================================== #
-
 
 if __name__=="__main__":
     unittest.main()
