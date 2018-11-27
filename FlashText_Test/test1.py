@@ -12,12 +12,15 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut auctor risus ut tinc
 
 class TestFlashtext_init(unittest.TestCase):
 
+
     def setUp(self):
         print "run " + self._testMethodName
         self.kp = KeywordProcessor()
 
+
     def tearDown(self):
         print "OK"
+
 
     def test_variable_fields_are_set(self):
         """
@@ -29,12 +32,15 @@ class TestFlashtext_init(unittest.TestCase):
 
 class TestFlashtext_contains(unittest.TestCase):
 
+
     def setUp(self):
         print "run " + self._testMethodName
         self.kp = KeywordProcessor()
 
+
     def tearDown(self):
         print "OK"
+
 
     def test_contains_simple(self):
         self.kp.add_keyword("a")
@@ -43,6 +49,7 @@ class TestFlashtext_contains(unittest.TestCase):
         # simple case false
         self.assertFalse("b" in self.kp, "b should not be in 'a'")
 
+
     def test_contains_extreme(self):
         # borderline case
         self.assertTrue("" not in self.kp, "'' cannot be contained")
@@ -50,6 +57,7 @@ class TestFlashtext_contains(unittest.TestCase):
         # extreme case
         self.kp.add_keyword(long_string)
         self.assertTrue(long_string in self.kp, "We can have long keywords")
+
 
     def test_contains_clean_words(self):
         # clean words
@@ -62,6 +70,7 @@ class TestFlashtext_contains(unittest.TestCase):
         self.assertTrue("red" in self.kp, "red is a keyword word")
         self.assertTrue("green" in self.kp, "green is a keyword word")
 
+
     def test_contains_from_list(self):
         # keyword from list
         self.kp.add_keywords_from_list(["brown", "orange"])
@@ -73,6 +82,7 @@ class TestFlashtext_contains(unittest.TestCase):
 
 class TestFlashtext_setitem(unittest.TestCase):
 
+
     def setUp(self):
         print "run " + self._testMethodName
         self.kp = KeywordProcessor()
@@ -80,10 +90,12 @@ class TestFlashtext_setitem(unittest.TestCase):
     def tearDown(self):
         print "OK"
 
+
     def test_setitem_basic(self):
         self.kp["foo"] = "bar"
         self.assertTrue("foo" in self.kp, "we added a keyword")
         self.assertTrue("bar" is self.kp["foo"], "we can access the clean word")
+
 
     def test_setitem_extreme(self):
         # edge case 0 lenth string
@@ -101,12 +113,15 @@ class TestFlashtext_setitem(unittest.TestCase):
 
 class TestFlashtext_set_non_word_boundaries(unittest.TestCase):
 
+
     def setUp(self):
         print "run " + self._testMethodName
         self.kp = KeywordProcessor()
 
+
     def tearDown(self):
         print "OK"
+
 
     def test_set_non_word_boundaries_default(self):
         self.kp.add_keyword("is12")
@@ -115,6 +130,7 @@ class TestFlashtext_set_non_word_boundaries(unittest.TestCase):
         self.assertTrue("is12" in found, "keyword can be letters and digits")
         self.assertTrue("is" not in found, "keyword not in sentence")
 
+
     def test_set_non_word_boundaries_basic(self):
         self.kp.set_non_word_boundaries(set(string.letters))
         self.kp.add_keyword("is")
@@ -122,6 +138,86 @@ class TestFlashtext_set_non_word_boundaries(unittest.TestCase):
         print "HERE IT COMES"
         print found
         self.assertTrue("is" in found, "keyword doesnt include numbers")
+
+
+# =================================================================== #
+
+class TestFlashtext_add_keyword(unittest.TestCase):
+
+    def setUp(self):
+        print "run " + self._testMethodName
+        self.kp = KeywordProcessor()
+
+
+    def tearDown(self):
+        print "OK"
+
+
+    def test_add_keyword_basic(self):
+
+
+# =================================================================== #
+
+class TestFlashtext_get_keyword(unittest.TestCase):
+
+    def setUp(self):
+        print "run " + self._testMethodName
+        self.kp = KeywordProcessor()
+
+
+    def tearDown(self):
+        print "OK"
+
+
+    def test_get_keyword_basic(self):
+
+
+# =================================================================== #
+
+class TestFlashtext_add_keywords_from_dict(unittest.TestCase):
+
+    def setUp(self):
+        print "run " + self._testMethodName
+        self.kp = KeywordProcessor()
+
+
+    def tearDown(self):
+        print "OK"
+
+
+    def test_add_keywords_from_dict_basic(self):
+
+
+# =================================================================== #
+
+class TestFlashtext_add_keywords_from_list(unittest.TestCase):
+
+    def setUp(self):
+        print "run " + self._testMethodName
+        self.kp = KeywordProcessor()
+
+
+    def tearDown(self):
+        print "OK"
+
+
+    def test_add_keywords_from_list_basic(self):
+
+
+# =================================================================== #
+
+class TestFlashtext_get_all_keywords(unittest.TestCase):
+
+    def setUp(self):
+        print "run " + self._testMethodName
+        self.kp = KeywordProcessor()
+
+
+    def tearDown(self):
+        print "OK"
+
+
+    def test_get_all_keywords_basic(self):
 
 
 # =================================================================== #
