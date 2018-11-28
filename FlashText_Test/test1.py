@@ -48,13 +48,6 @@ import string
 long_string = """Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a iaculis diam. Sed et ante ante. Aliquam quis turpis iaculis, vehicula nisl non, mollis elit. In hac habitasse platea dictumst. Nulla vestibulum lorem facilisis porta laoreet. Duis vulputate eros ac augue maximus, et bibendum dui luctus. Aliquam nisl lorem, pulvinar at turpis a, tempus porta est. Cras risus mi, fermentum laoreet tempor vitae, scelerisque a turpis. Donec eu interdum ligula, vel ullamcorper arcu. Nam facilisis urna ultricies nunc iaculis, quis volutpat urna aliquet. Duis in felis sit amet tortor rutrum facilisis. Donec non pellentesque elit. Sed sit amet gravida lorem. Mauris odio ante, interdum eu convallis eu, volutpat malesuada velit. Aliquam sed tincidunt justo.
 """
 
-try:
-    global long_bad_string
-    with open("blns.txt", "r") as myfile:
-        long_bad_string = myfile.read()
-except e:
-    print "failed to read blns.txt"
-
 """# =================================================================== #
  ____    ___                    __          ____                       ______                __
 /\  _`\ /\_ \                  /\ \        /\  _`\                    /\__  _\              /\ \__
