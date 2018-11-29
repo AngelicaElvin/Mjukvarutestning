@@ -107,15 +107,21 @@ class Test_add_non_word_boundary(unittest.TestCase):
         print "run " + self._testMethodName
         self.kp = KeywordProcessor()
 
-
     def tearDown(self):
         print "OK"
 
     def test_add_non_word_boundary_basic(self):
-        self.kp.add_keyword('succes','work')
+        self.kp.add_keyword('succes')
+        found = self.kp.extract_keywords("wow its a success")
+        #self.assertEqual(self.kp.add_non_word_boundary('s'),"success", "Could not add character")
+        #self.kp.add_keyword("succes")
+        #found = self.kp.extract_keywords("wow this is12 a sentence")
+        #self.assertTrue("is12" in found, "keyword can be letters and digits")
+        #self.assertTrue("is" not in found, "keyword not in sentence")
+        #self.assertTrue("success" in new_keyword, "Could not add character to word")
         #self.assertEqual(self.kp.add_non_word_boundary("s"), None)
 
-    def test_add_non_word_boundary_dict(self):
+
 
 
 # Class Test_remove_keyword which tests function remove_keyword
@@ -129,9 +135,21 @@ class Test_remove_keyword(unittest.TestCase):
     def tearDown(self):
         print "OK"
 
-    def test_remove_keyword(self):
-        self.kp.add_keywords_from_dict({"Remove":["one"],"a":["two"], "word":["three"]})
-        self.assertEqual(self.kp.remove_keyword("three"), True, "Could not remove word")
+    def test_remove_keyword_basic(self):
+        self.kp.add_keyword('animal')
+        self.assertEqual(self.kp.remove_keyword("animal"), True, "Could not remove word")
+
+    def Test_remove_keyword_empty(self):
+        self.kp.add_keyword('empty')
+        self.assertEqual(self.kp.remove_keyword(""), True, "Could not remove empty string")
+
+    def test_remove_keyword_dict(self):
+        self.kp.add_keywords_from_dict(test_dictionary)
+        self.assertEqual(self.kp.remove_keyword("1"), True, "Could not remove word")
+
+    def test_remove_keyword_list(self):
+        self.kp.add_keywords_from_list(test_list)
+        self.assertEqual(self.kp.remove_keyword("This"), True, "Could not remove word")
 
 # Class Test_add_keyword_from_file which tests function add_keyword_from_file
 
@@ -144,9 +162,10 @@ class Test_add_keyword_from_file(unittest.TestCase):
     def tearDown(self):
         print "OK"
 
-    #def test_add_keyword_from_file(self):
-    #    self.kp.add_keywords_from_dict({"Add":["one"]})
-    #    self.assertEqual(self.kp.add_keyword_from_file('keyword_file.txt'), True, "Could not add word from file")
+    def test_add_keyword_from_file(self):
+        self.kp.add_keyword_from_file('keyword_file.txt')
+        self.assertTrue("hej" in self.kp, "Could not add word from file")
+        self.assertFalse("hej" not in self.kp, "Could not add word from file")
 
 # Class Test_remove_keywords_from_dict which tests function remove_keywords_from_dict
 
@@ -159,6 +178,15 @@ class Test_remove_keywords_from_dict(unittest.TestCase):
     def tearDown(self):
         print "OK"
 
+    def test_remove_keywords_from_dict_basic(self):
+        self.kp.add_keywords_from_dict(test_dictionary)
+        self.kp.remove_keywords_from_dict({"This":["1"]})
+        self.assertFalse("This" in self.kp, "Could not remove keyword from dictionary")
+        self.assertTrue("This" not in self.kp, "Could not remove keyword from dictionary")
+
+
+
+
 # Class Test_remove_keywords_from_list which tests function remove_keywords_from_list
 
 class Test_remove_keywords_from_list(unittest.TestCase):
@@ -169,6 +197,20 @@ class Test_remove_keywords_from_list(unittest.TestCase):
 
     def tearDown(self):
         print "OK"
+
+    def test_remove_keyword_from_list_basic(self):
+        self.kp.add_keywords_from_list(test_list)
+        self.kp.remove_keywords_from_list(["This"])
+        self.assertTrue("This" not in self.kp, "Could not remove keyword from list")
+        self.assertFalse("This" in self.kp, "Could not remove keyword from list")
+
+
+    def test_remove_keyword_from_list_extended(self):
+        self.kp.remove_keywords_from_list(["This","is"])
+        self.assertTrue("This" not in self.kp, "Could not remove keyword from list")
+        self.assertFalse("This" in self.kp, "Could not remove keyword from list")
+        self.assertTrue("is" not in self.kp, "Could not remove keyword from list")
+        self.assertFalse("is" in self.kp, "Could not remove keyword from list")
 
 
 
