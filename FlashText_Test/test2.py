@@ -107,17 +107,20 @@ class Test_add_non_word_boundary(unittest.TestCase):
     def tearDown(self):
         print "OK"
 
-    def test_add_non_word_boundary_basic(self):
-        self.kp.add_keyword('succes')
-        found = self.kp.extract_keywords("wow its a success")
-        #self.assertEqual(self.kp.add_non_word_boundary('s'),"success", "Could not add character")
-        #self.kp.add_keyword("succes")
-        #found = self.kp.extract_keywords("wow this is12 a sentence")
-        #self.assertTrue("is12" in found, "keyword can be letters and digits")
-        #self.assertTrue("is" not in found, "keyword not in sentence")
-        #self.assertTrue("success" in new_keyword, "Could not add character to word")
-        #self.assertEqual(self.kp.add_non_word_boundary("s"), None)
+    def test_add_non_word_boundary_default(self):
+        self.kp.add_keyword("is12")
+        self.kp.add_keyword("is")
+        found = self.kp.extract_keywords("wow this is12 a sentence")
+        self.assertTrue("is12" in found, "keyword can be letters and digits")
+        self.assertTrue("is" not in found, "keyword not in sentence")
 
+
+    def test_add_non_word_boundary_basic(self):
+        self.kp.set_non_word_boundaries(set())
+        self.kp.add_non_word_boundary(string.letters)
+        self.kp.add_keyword("is")
+        found = self.kp.extract_keywords("wow this is12 a sentence")
+        self.assertTrue("is" in found, "keyword doesnt include numbers")
 
 
 
@@ -159,10 +162,15 @@ class Test_add_keyword_from_file(unittest.TestCase):
     def tearDown(self):
         print "OK"
 
-    def test_add_keyword_from_file(self):
+    def test_add_keyword_from_file_basic(self):
         self.kp.add_keyword_from_file('keyword_file.txt')
-        self.assertTrue("Test" in self.kp, "Could not add word from file")
-        self.assertFalse("Test" not in self.kp, "Could not add word from file")
+        self.assertTrue("keyword" in self.kp, "Could not add word from file")
+        self.assertFalse("keyword" not in self.kp, "Could not add word from file")
+
+    def test_add_keyword_from_file_space(self):
+        self.kp.add_keyword_from_file('empty_file.txt')
+        self.assertTrue(" " in self.kp, "Could not add space from file")
+        self.assertFalse(" " not in self.kp, "Could not add space from file")
 
 # Class Test_remove_keywords_from_dict which tests function remove_keywords_from_dict
 
