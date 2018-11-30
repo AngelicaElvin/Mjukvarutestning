@@ -33,15 +33,19 @@ class Test_len(unittest.TestCase):
 
     def test_len_basic(self):
         self.kp.add_keyword("a")
-        self.assertEqual(len(self.kp), 1)
+        self.assertEqual(len(self.kp), 1, "The length did not match")
 
     def test_len_dictionary(self):
         self.kp.add_keywords_from_dict(test_dictionary)
-        self.assertEqual(len(self.kp), 4)
+        self.assertEqual(len(self.kp), 4, "The length did not match")
 
     def test_len_list(self):
         self.kp.add_keywords_from_list(test_list)
-        self.assertEqual(len(self.kp),4)
+        self.assertEqual(len(self.kp),4, "The length did not match")
+
+    def test_len_empty(self):
+        self.kp.add_keyword('')
+        self.assertEqual(len(self.kp),0, "The length did not match")
 
 
 # Class Test_getitem which tests function __getitem__
@@ -176,7 +180,6 @@ class Test_remove_keywords_from_dict(unittest.TestCase):
         self.kp.remove_keywords_from_dict({"This":["1"]})
         self.assertFalse("This" in self.kp, "Could not remove keyword from dictionary")
         self.assertTrue("This" not in self.kp, "Could not remove keyword from dictionary")
-
 
 
 
