@@ -57,19 +57,12 @@ class Test_getitem(unittest.TestCase):
 
     def test_getitem_basic(self):
         self.kp.add_keyword('colour','green')
-        self.assertEqual(self.kp["colour"], "green", "Word not found")
-
-    def test_getitem_dictionary(self):
-        keyword_dict = {"color": ["red"]}
-        self.kp.add_keywords_from_dict(keyword_dict)
-        #self.assertEqual(self.kp.__getitem__("red"), "colour", "Word not found")
-
+        self.assertEqual(self.kp.__getitem__("colour"), "green", "Word not found")
 
     def test_getitem_dict(self):
         self.kp.add_keywords_from_dict(test_dictionary)
-        self.assertTrue("1" in self.kp, "keyword This exists")
-        #self.assertTrue(self.kp['This'], '1', "Word not found")
-        #self.assertEqual(self.kp.__getitem__(),["1", "2", "3", "4"] , "Words not found")
+        self.assertTrue("1" in self.kp, "keyword <This> exists")
+        self.assertEqual(self.kp.__getitem__("1"), "This", "Word not found")
 
     def test_getitem_list(self):
         self.kp.add_keywords_from_list(test_list)
@@ -164,8 +157,8 @@ class Test_add_keyword_from_file(unittest.TestCase):
 
     def test_add_keyword_from_file(self):
         self.kp.add_keyword_from_file('keyword_file.txt')
-        self.assertTrue("hej" in self.kp, "Could not add word from file")
-        self.assertFalse("hej" not in self.kp, "Could not add word from file")
+        self.assertTrue("Test" in self.kp, "Could not add word from file")
+        self.assertFalse("Test" not in self.kp, "Could not add word from file")
 
 # Class Test_remove_keywords_from_dict which tests function remove_keywords_from_dict
 
