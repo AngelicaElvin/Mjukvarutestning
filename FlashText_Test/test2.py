@@ -9,7 +9,7 @@
 #
 # The functions from Python library FlashText that are tested
 # in this file are len, getitem, delitem, add_non_word_boundary, remove_keyword,
-# add_keyword_from_file, remove_keywords_from_dict and remove_keywords_from_list.
+# add_keyword_from_file, remove_keywords_from_dict, remove_keywords_from_list and extract_keywords.
 
 
 import keywords
@@ -210,11 +210,54 @@ class Test_remove_keywords_from_list(unittest.TestCase):
 
 
     def test_remove_keyword_from_list_extended(self):
+        self.kp.add_keywords_from_list(test_list)
         self.kp.remove_keywords_from_list(["This","is"])
         self.assertTrue("This" not in self.kp, "Could not remove keyword from list")
         self.assertFalse("This" in self.kp, "Could not remove keyword from list")
         self.assertTrue("is" not in self.kp, "Could not remove keyword from list")
         self.assertFalse("is" in self.kp, "Could not remove keyword from list")
+
+    def test_remove_keyword_from_list_empty(self):
+        self.kp.add_keywords_from_list(test_list)
+        self.kp.remove_keywords_from_list([])
+        self.assertTrue("This" in self.kp, "Could not remove empty list")
+
+
+# CLass Test_extract_keywords which tests function extract_keywords
+
+class Test_extract_keywords(unittest.TestCase):
+
+    def setUp(self):
+        print "run " + self._testMethodName
+        self.kp = KeywordProcessor()
+
+    def tearDown(self):
+        print "OK"
+
+    def test_extract_keywords_basic(self):
+        self.kp.add_keyword('dogs','animal')
+        self.kp.add_keyword('cats')
+        self.assertEqual(self.kp.extract_keywords('I love cats and dogs.'), ['cats','animal'], "Could not extract keywords")
+
+    def test_extract_keywords_dict(self):
+        self.kp.add_keywords_from_dict(test_dictionary)
+        self.assertEqual(self.kp.extract_keywords('1 2 4'), ['This','is','testing'], "Could not extract keywords from dictionary")
+
+    def test_extract_keywords_empty(self):
+        self.kp.add_keyword('')
+        self.assertEqual(self.kp.extract_keywords('Keyword'), [], "Could not extract keyword from empty list")
+
+    def test_extract_keywords_empty_extended(self):
+        self.kp.add_keyword('empty')
+        self.assertEqual(self.kp.extract_keywords(''), [], "Could not extract empty list")
+
+    def test_extract_keywords_list(self):
+        self.kp.add_keywords_from_list(test_list)
+        self.assertEqual(self.kp.extract_keywords('This could be for testing list'), ['This','for','testing'], "Could not extract from list")
+
+    def test_extract_keywords_file(self):
+        self.kp.add_keyword_from_file('keyword_file.txt')
+        self.assertEqual(self.kp.extract_keywords('This is a keyword'), ['file'], "Could not extract word from file")
 
 
 
