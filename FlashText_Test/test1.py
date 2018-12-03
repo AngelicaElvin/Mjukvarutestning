@@ -61,13 +61,7 @@ long_string = """Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec 
 class TestFlashtext_init(unittest.TestCase):
 
     def setUp(self):
-        print "run " + self._testMethodName
         self.kp = KeywordProcessor()
-
-
-    def tearDown(self):
-        print "OK"
-
 
     def test_variable_fields_are_set(self):
         """
@@ -80,44 +74,62 @@ class TestFlashtext_init(unittest.TestCase):
 class TestFlashtext_contains(unittest.TestCase):
 
     def setUp(self):
-        print "run " + self._testMethodName
         self.kp = KeywordProcessor()
 
-
-    def tearDown(self):
-        print "OK"
-
-
     def test_contains_simple(self):
+        """
+        Check if simple words are available in the processor. 
+        """
+
         self.kp.add_keyword("a")
-        # simple case true
+        self.kp.add_keyword("House")
+
+        # Normal: Test that some simple keywords are added correctly.
         self.assertTrue("a" in self.kp, "cannot find 'a' in 'a'")
-        # simple case false
+        # Normal: Test that simple, but longer, keyword is added
+        self.assertTrue("House" in self.kp, "House should be part of keywords")
+        # Normal: Test that keywords who haven't been added is not there
         self.assertFalse("b" in self.kp, "b should not be in 'a'")
 
 
     def test_contains_extreme(self):
-        # borderline case
+        """
+        Check that the contains function correctly handles some borderline and
+        extreme cases.
+        """
+        
+        # Borderline: Empty string not added
         self.assertTrue("" not in self.kp, "'' cannot be contained")
-        # extreme case
+        
+        # Add empty, should not make a difference
+        self.kp.add_keyword("")
+
+        # Borderline: Empty string added
+        self.assertTrue("" not in self.kp, "'' cannot be contained")
+        # Extreme: Long string
         self.kp.add_keyword(long_string)
         self.assertTrue(long_string in self.kp, "We can have long keywords")
 
 
     def test_contains_clean_words(self):
-        # clean words
+        """
+        Check that the contains function properly adds keywords that have a 
+        corresponding cleanword and make sure that the cleanwords are not added.
+        """
+        
+        # Normal: clean words
         self.kp.add_keyword("yellow", "blue")
         self.assertTrue("yellow" in self.kp, "keyword yellow should exist")
         self.assertFalse("blue" in self.kp, "Clean word not part of keywords")
-        # clean word using dicts
+        
+        # Normal: clean word using dicts
         keyword_dict = {"color": ["red", "green"]}
         self.kp.add_keywords_from_dict(keyword_dict)
         self.assertTrue("red" in self.kp, "red is a keyword word")
         self.assertTrue("green" in self.kp, "green is a keyword word")
 
-
     def test_contains_from_list(self):
-        # keyword from list
+        # Normal: keyword from list
         self.kp.add_keywords_from_list(["brown", "orange"])
         self.assertTrue("brown" in self.kp, "keyword brown from list can be added")
         self.assertTrue("orange" in self.kp, "keyword orange from list can be added")
@@ -128,25 +140,28 @@ class TestFlashtext_contains(unittest.TestCase):
 class TestFlashtext_setitem(unittest.TestCase):
 
     def setUp(self):
-        print "run " + self._testMethodName
         self.kp = KeywordProcessor()
 
-    def tearDown(self):
-        print "OK"
-
-
     def test_setitem_basic(self):
+        """
+
+        """
+
         self.kp["foo"] = "bar"
         self.assertTrue("foo" in self.kp, "we added a keyword")
         self.assertTrue("bar" is self.kp["foo"], "we can access the clean word")
 
 
     def test_setitem_extreme(self):
-        # edge case 0 lenth string
+        """
+
+        """
+
+        # Borderline: String of length 0
         self.kp[""] = ""
         self.assertEquals(len(self.kp), 0, "we do not add empty string")
         self.assertEquals(self.kp[""], None, "cannot access with empty string as key")
-        # long string
+        # Borderline: Long string
         self.kp[long_string] = long_string
         self.assertEquals(len(self.kp), 1, "we added the long string as keyword")
         self.assertEquals(self.kp[long_string], long_string, "we can access the long string")
@@ -157,13 +172,7 @@ class TestFlashtext_setitem(unittest.TestCase):
 class TestFlashtext_set_non_word_boundaries(unittest.TestCase):
 
     def setUp(self):
-        print "run " + self._testMethodName
         self.kp = KeywordProcessor()
-
-
-    def tearDown(self):
-        print "OK"
-
 
     def test_set_non_word_boundaries_default(self):
         self.kp.add_keyword("is12")
@@ -187,13 +196,7 @@ class TestFlashtext_add_get_keyword(unittest.TestCase):
     this allowed, have two functions tested in one test?
     """
     def setUp(self):
-        print "run " + self._testMethodName
         self.kp = KeywordProcessor()
-
-
-    def tearDown(self):
-        print "OK"
-
 
     def test_add_keyword_basic(self):
         self.kp.add_keyword("foo")
@@ -243,13 +246,7 @@ Can we skip this and use the test above for both functions?
 class TestFlashtext_add_keywords_from_dict(unittest.TestCase):
 
     def setUp(self):
-        print "run " + self._testMethodName
         self.kp = KeywordProcessor()
-
-
-    def tearDown(self):
-        print "OK"
-
 
     def test_add_keywords_from_dict_basic(self):
         self.kp.add_keywords_from_dict({"color": ["yellow", "red"]})
@@ -275,13 +272,7 @@ class TestFlashtext_add_keywords_from_dict(unittest.TestCase):
 class TestFlashtext_add_keywords_from_list(unittest.TestCase):
 
     def setUp(self):
-        print "run " + self._testMethodName
         self.kp = KeywordProcessor()
-
-
-    def tearDown(self):
-        print "OK"
-
 
     def test_add_keywords_from_list_basic(self):
         mlist = ["one", "two", "three", "four", "five"]
@@ -309,13 +300,7 @@ class TestFlashtext_add_keywords_from_list(unittest.TestCase):
 class TestFlashtext_get_all_keywords(unittest.TestCase):
 
     def setUp(self):
-        print "run " + self._testMethodName
         self.kp = KeywordProcessor()
-
-
-    def tearDown(self):
-        print "OK"
-
 
     def test_get_all_keywords_basic(self):
         basic_list = ["one", "two", "three"]
@@ -328,6 +313,146 @@ class TestFlashtext_get_all_keywords(unittest.TestCase):
 
         self.kp.add_keyword("long", long_string)
         self.assertTrue(long_string == self.kp.get_all_keywords()["long"], "long string as keyword")
+
+
+# =================================================================== #
+
+class TestFlashtext_replace(unittest.TestCase):
+
+    def setUp(self):
+        self.kp = KeywordProcessor()
+
+    def test_replace_normal(self):
+        """
+
+        """
+
+        # Normal: Replace ONE word
+        self.kp["Crabs"] = "Trolls"
+        str = self.kp.replace_keywords("Crabs live in the forest")
+        self.assertTrue(str == "Trolls live in the forest")
+
+        # Normal: Replace multiple words
+        self.kp["Gloves"] = "Handskar"
+        self.kp["Boots"] = "Stövlar"
+        self.kp["Hats"] = "Hattar"
+        str = self.kp.replace_keywords(
+            "Alway remember to bring Gloves, boots and hats"
+        )
+        self.assertEqual(
+            str, 
+            "Alway remember to bring Handskar, Stövlar and Hattar"
+        )
+
+    def test_replace_case_sensitive(self):
+        """
+        Test case sensitivity. When the keyword processor is in case sensitive
+        mode then only words with a matching case will be regarded as possible
+        results. It defaults to case-insensitive where all word regardless of 
+        case are considered.
+        """
+
+        # Normal: Test multi-word replace with case insensitivity
+        self.kp["Blue"] = "Purple"
+        self.kp["Red"] = "Magenta"
+        str = self.kp.replace_keywords("Colors blue and red are nice")
+        self.assertEqual(str, "Colors Purple and Magenta are nice")
+
+        # Create case-sensitive keyword processor
+        case_kp = KeywordProcessor(case_sensitive=True)
+
+        # Normal: Test multi-word replace with case sensitivity
+        case_kp["Blue"] = "Purple"
+        case_kp["Red"] = "Magenta"
+        str = case_kp.replace_keywords("Colors blue and red are nice")
+        self.assertTrue(str, "Colors blue and red are nice")
+
+    def test_replace_dict(self):
+        """
+
+        """
+
+        # Add some more keywords from list
+        self.kp.add_keywords_from_dict({
+            "Rabbits": ["Trolls"],
+            "on": ["in"],
+            "beach": ["forest"]
+        })
+        str = self.kp.replace_keywords("Trolls live in the forest")
+        self.assertTrue(str == "Rabbits live on the beach")
+
+        # Multiple keyword with same cleanword
+        self.kp.add_keywords_from_dict({
+            "color": ["yellow", "brown"],
+            "fruits": ["oranges", "apples", "pears"] 
+        })
+        str = self.kp.replace_keywords(
+            "Colors are yellow, brown or other."
+            "While fruits are oranges, apples or pears"
+        )
+        self.assertTrue(str ==
+            "Colors are color, color or other."
+            "While fruits are fruits, fruits or fruits"
+        )
+
+    def test_replace_extended(self):
+        """
+        Check replacing for some extended examples where there might be words
+        that are connected by a delimiting character.
+        """
+
+        # Normal: Test connected words
+        self.kp.add_keywords_from_dict({
+            "Cannon": ["Water"],
+            "balls": ["slides"]
+        })
+        str = self.kp.replace_keywords("Water-slides are deadly")
+        self.assertEqual(str, "Cannon-balls are deadly")
+
+    def test_replace_borderline(self):
+        """
+        Test bordeline cases such as when replacing words that correspond to an
+        empty keyword or recursive. When one word to replace is replaced with
+        another word that is to be replaced
+        """
+
+        # Borderline: Empty replacement (clean) word
+        self.kp.add_keywords_from_dict({
+            "": ["red, green, blue, yellow"]
+        })
+        str = self.kp.replace_keywords(
+            "colors still exist, red, yellow, blue and green are all gone"
+        )
+        self.assertEqual(
+            str, 
+            "colors still exist, red, yellow, blue and green are all gone"
+        )
+
+        # Borderline: Replace into replacement word
+        self.kp.add_keywords_from_dict({
+            "fruit": ["orange", "apple", "pear"],
+            "pear": ["fruit"]
+        })
+        str = self.kp.replace_keywords(
+            "Fruits, such as the fruit orange, apple or pear"
+        )
+        self.assertEqual(
+            str, 
+            "Fruits, such as the pear fruit, fruit or fruit"
+        )
+
+    def test_replace_extreme(self):
+        """
+        
+        """
+
+        # Extreme: Replace two long "keywords"
+        self.kp.add_keywords_from_dict({
+            "hej": [long_string]
+        })
+        str = self.kp.replace_keywords(long_string + " " + long_string)
+        self.assertEqual(str, "hej hej")
+
 
 
 """# =================================================================== #
@@ -347,4 +472,4 @@ class TestFlashtext_get_all_keywords(unittest.TestCase):
 # =================================================================== #
 
 if __name__=="__main__":
-    unittest.main()
+    unittest.main(verbosity=2)
