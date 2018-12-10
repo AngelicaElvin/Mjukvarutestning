@@ -85,10 +85,10 @@ class SourceAnalyzer():
         """
         Plot the graph
         """
-        pos = nx.spring_layout(self.graph)
-        nx.draw_networkx_nodes(self.graph, pos, node_color='y', node_size=600)
+        pos = nx.shell_layout(self.graph)
+        nx.draw_networkx_nodes(self.graph, pos, node_color='y', node_size=500)
         nx.draw_networkx_labels(self.graph, pos)
-        nx.draw_networkx_edges(self.graph, pos, arrows=True)
+        nx.draw_networkx_edges(self.graph, pos, arrows=True, arrowsize=20)
         plot.show()
 
 def analyze_test():
@@ -133,8 +133,38 @@ def analyze_test():
 
 
 def analyze_source():
-    analyze_test()
+    # Build graph
+    graph = nx.DiGraph()
+    graph.add_edge(0, 1)
+    graph.add_edge(0, 14)
+    graph.add_edge(1, 2)
+    graph.add_edge(1, 3)
+    graph.add_edge(2, 3)
+    graph.add_edge(3, 5)
+    graph.add_edge(4, 5)
+    graph.add_edge(4, 8)
+    graph.add_edge(5, 6)
+    graph.add_edge(5, 7)
+    graph.add_edge(6, 4)
+    graph.add_edge(6, 4)
+    graph.add_edge(7, 14)
+    graph.add_edge(8, 9)
+    graph.add_edge(8, 14)
+    graph.add_edge(9, 11)
+    graph.add_edge(10, 11)
+    graph.add_edge(10, 13)
+    graph.add_edge(11, 12)
+    graph.add_edge(11, 13)
+    graph.add_edge(12, 10)
+    graph.add_edge(13, 14)
 
+    analyzer = SourceAnalyzer(graph)
+    prime_paths = analyzer.find_all_paths()
+
+    for pp in prime_paths:
+        print "Path:" + str(pp)
+
+    analyzer.plot()
 
 if __name__ == "__main__":
     analyze_source()
