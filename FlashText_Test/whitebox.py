@@ -64,6 +64,9 @@ class test_whitebox_delitem(unittest.TestCase):
         Test the coverage of Path 0 (specified above). This path goes straight through the functions in the program
         without ever looping more than once in a loop.
 
+        Execution Path:
+            0, 1, 2, 3, 5, 6, 4, 8, 9, 11, 12, 10, 13, 14
+
         Keyword Constraint:
             - Length of keyword matching the keyword to delete must be EXACTLY one letter.
             - Another keyword must be added after that keyword so that the internal Dict is correct.
@@ -80,6 +83,9 @@ class test_whitebox_delitem(unittest.TestCase):
         """
         Test the coverage of Path 1. This path should test the case where there is ONE letter in the word that is being
         deleted but there is no matching keyword in the processor.
+
+        Execution Path:
+            0, 1, 2, 3, 5, 7, 14
 
         Keyword Constraint:
             - There must be no keyword that is matching the word that is being deleted
@@ -98,6 +104,9 @@ class test_whitebox_delitem(unittest.TestCase):
         at least twice (4 back to 4, 5 back to 5 and 6 back to 6). These paths can all be combined by looping at least
         two times.
 
+        Execution Path:
+            0, 1, 2, 3, 5, 6, 4, 5, 6, 4, 5, 6, 4, 8, 9, 11, 12, 10, 11, 12, 10, 11, 12, 10, 13, 14
+
         Keyword Constraint:
             - There must be 1-2 keywords that each contains the first two letters of the word to be deleted.
 
@@ -106,14 +115,17 @@ class test_whitebox_delitem(unittest.TestCase):
             two letters of the word.
         """
         kp = KeywordProcessor(case_sensitive=False)
-        kp.add_keyword("Windows")
+        kp.add_keyword("Win")
         self.assertTrue(kp.__delitem__("Windows"), "The keyword must have been found")
-        self.assertFalse("Windows" in kp, "Keyword must have been delete")
+        self.assertFalse("Win" in kp, "Keyword must have been delete")
      
     def test_path_5(self):
         """
         Test the coverage of Paths 5. This path should test exactly one iteration of the first loop followed by breaking
         out of the function.
+
+        Execution Path:
+            0, 1, 2, 3, 5, 6, 4, 5, 7, 14
 
         Keyword Constraint:
             - There must be a keyword of at least size 2, or multiple keywords of combined size 2.
@@ -135,6 +147,9 @@ class test_whitebox_delitem(unittest.TestCase):
         reached at least twice (10 back to 10, 11 back to 11 and 12 back to 12). These paths can all be combined by
         looping at least two times.
 
+        Execution Path:
+            0, 1, 2, 3, 5, 6, 4, 5, 6, 4, 5, 6, 4, 8, 9, 11, 12, 10, 11, 12, 10, 11, 12, 10, 13, 14
+
         Keyword Constraint:
             - There must be a keyword matching the word to delete.
             - There must be at least 2 letters in the keyword
@@ -143,9 +158,9 @@ class test_whitebox_delitem(unittest.TestCase):
             - The word to delete must match one of the added keywords
         """
         kp = KeywordProcessor(case_sensitive=False)
-        kp.add_keyword("Windows")
+        kp.add_keyword("Win")
         self.assertTrue(kp.__delitem__("Windows"), "The keyword must have been found")
-        self.assertFalse("Windows" in kp, "Keyword must have been delete")
+        self.assertFalse("Win" in kp, "Keyword must have been delete")
             
 
 
