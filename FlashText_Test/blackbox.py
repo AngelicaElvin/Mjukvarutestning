@@ -1,70 +1,299 @@
 # coding: utf-8
 
-"""# =================================================================== #
- ____    ___                     __      ______                __        ______                __
-/\  _`\ /\_ \                   /\ \    /\__  _\              /\ \__    /\__  _\              /\ \__
-\ \ \L\_\//\ \      __      ____\ \ \___\/_/\ \/    __   __  _\ \ ,_\   \/_/\ \/    __    ____\ \ ,_\
- \ \  _\/ \ \ \   /'__`\   /',__\\ \  _ `\ \ \ \  /'__`\/\ \/'\\ \ \/      \ \ \  /'__`\ /',__\\ \ \/
-  \ \ \/   \_\ \_/\ \L\.\_/\__, `\\ \ \ \ \ \ \ \/\  __/\/>  </ \ \ \_      \ \ \/\  __//\__, `\\ \ \_
-   \ \_\   /\____\ \__/.\_\/\____/ \ \_\ \_\ \ \_\ \____\/\_/\_\ \ \__\      \ \_\ \____\/\____/ \ \__\
-    \/_/   \/____/\/__/\/_/\/___/   \/_/\/_/  \/_/\/____/\//\/_/  \/__/       \/_/\/____/\/___/   \/__/
-"""# =================================================================== #
-
 """
-@author Christoffer Gustfsson, Filip Björklund
+@author Christoffer Gustfsson, Filip Björklund, Angelica Elvin and Alexander Engberg
 @group  11
 @desc   This is a test of the Python library FlashText:
         https://github.com/vi3k6i5/flashtext
 """
 
-
-"""# =================================================================== #
- ______                                     __
-/\__  _\                                   /\ \__
-\/_/\ \/     ___ ___   _____     ___   _ __\ \ ,_\
-   \ \ \   /' __` __`\/\ '__`\  / __`\/\`'__\ \ \/
-    \_\ \__/\ \/\ \/\ \ \ \L\ \/\ \L\ \ \ \/ \ \ \_
-    /\_____\ \_\ \_\ \_\ \ ,__/\ \____/\ \_\  \ \__\
-    \/_____/\/_/\/_/\/_/\ \ \/  \/___/  \/_/   \/__/
-                         \ \_\
-                          \/_/
-"""# =================================================================== #
-
 import unittest
-from keywords import *
 import string
+from keywords import *
+
+test_dictionary = {"This":["1"], "is":["2"], "for":["3"], "testing":["4"]}
+test_list = ["This", "is", "for", "testing"]
+long_string = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a iaculis diam. Sed et ante ante. Aliquam quis turpis iaculis, vehicula nisl non, mollis elit. In hac habitasse platea dictumst. Nulla vestibulum lorem facilisis porta laoreet. Duis vulputate eros ac augue maximus, et bibendum dui luctus. Aliquam nisl lorem, pulvinar at turpis a, tempus porta est. Cras risus mi, fermentum laoreet tempor vitae, scelerisque a turpis. Donec eu interdum ligula, vel ullamcorper arcu. Nam facilisis urna ultricies nunc iaculis, quis volutpat urna aliquet. Duis in felis sit amet tortor rutrum facilisis. Donec non pellentesque elit. Sed sit amet gravida lorem. Mauris odio ante, interdum eu convallis eu, volutpat malesuada velit. Aliquam sed tincidunt justo."
+
+# =================================================================== #
 
 
-"""# =================================================================== #
- __  __  __         ___
-/\ \/\ \/\ \__  __ /\_ \
-\ \ \ \ \ \ ,_\/\_\\//\ \
- \ \ \ \ \ \ \/\/\ \ \ \ \
-  \ \ \_\ \ \ \_\ \ \ \_\ \_
-   \ \_____\ \__\\ \_\/\____\
-    \/_____/\/__/ \/_/\/____/
-"""# =================================================================== #
+# Class Test_len which tests function __len__
 
-long_string = """Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a iaculis diam. Sed et ante ante. Aliquam quis turpis iaculis, vehicula nisl non, mollis elit. In hac habitasse platea dictumst. Nulla vestibulum lorem facilisis porta laoreet. Duis vulputate eros ac augue maximus, et bibendum dui luctus. Aliquam nisl lorem, pulvinar at turpis a, tempus porta est. Cras risus mi, fermentum laoreet tempor vitae, scelerisque a turpis. Donec eu interdum ligula, vel ullamcorper arcu. Nam facilisis urna ultricies nunc iaculis, quis volutpat urna aliquet. Duis in felis sit amet tortor rutrum facilisis. Donec non pellentesque elit. Sed sit amet gravida lorem. Mauris odio ante, interdum eu convallis eu, volutpat malesuada velit. Aliquam sed tincidunt justo.
-"""
+class Test_len(unittest.TestCase):
+
+    def setUp(self):
+        print "run " + self._testMethodName
+        self.kp = KeywordProcessor()
+
+    def tearDown(self):
+        print "OK"
+
+    def test_len_basic(self):
+        self.kp.add_keyword("a")
+        self.assertEqual(len(self.kp), 1, "The length did not match")
+
+    def test_len_dictionary(self):
+        self.kp.add_keywords_from_dict(test_dictionary)
+        self.assertEqual(len(self.kp), 4, "The length did not match")
+
+    def test_len_list(self):
+        self.kp.add_keywords_from_list(test_list)
+        self.assertEqual(len(self.kp),4, "The length did not match")
+
+    def test_len_empty(self):
+        self.kp.add_keyword('')
+        self.assertEqual(len(self.kp),0, "The length did not match")
 
 
-"""# =================================================================== #
- ____    ___                    __          ____                       ______                __
-/\  _`\ /\_ \                  /\ \        /\  _`\                    /\__  _\              /\ \__
-\ \ \L\ \//\ \      __      ___\ \ \/'\    \ \ \L\ \    ___   __  _   \/_/\ \/    __    ____\ \ ,_\   ____
- \ \  _ <'\ \ \   /'__`\   /'___\ \ , <     \ \  _ <'  / __`\/\ \/'\     \ \ \  /'__`\ /',__\\ \ \/  /',__\
-  \ \ \L\ \\_\ \_/\ \L\.\_/\ \__/\ \ \\`\    \ \ \L\ \/\ \L\ \/>  </      \ \ \/\  __//\__, `\\ \ \_/\__, `\
-   \ \____//\____\ \__/.\_\ \____\\ \_\ \_\   \ \____/\ \____//\_/\_\      \ \_\ \____\/\____/ \ \__\/\____/
-    \/___/ \/____/\/__/\/_/\/____/ \/_/\/_/    \/___/  \/___/ \//\/_/       \/_/\/____/\/___/   \/__/\/___/
-"""# =================================================================== #
+# =================================================================== #
+
+
+# Class Test_getitem which tests function __getitem__
+
+class Test_getitem(unittest.TestCase):
+
+    def setUp(self):
+        print "run " + self._testMethodName
+        self.kp = KeywordProcessor()
+
+    def tearDown(self):
+        print "OK"
+
+    def test_getitem_basic(self):
+        self.kp.add_keyword('colour','green')
+        self.assertEqual(self.kp.__getitem__("colour"), "green", "Word not found")
+
+    def test_getitem_dict(self):
+        self.kp.add_keywords_from_dict(test_dictionary)
+        self.assertTrue("1" in self.kp, "keyword <This> exists")
+        self.assertEqual(self.kp.__getitem__("1"), "This", "Word not found")
+
+    def test_getitem_list(self):
+        self.kp.add_keywords_from_list(test_list)
+        self.assertEqual(self.kp.__getitem__("This"), "This", "Word not found")
+
+
+# =================================================================== #
+
+
+# Class Test_delitem which tests function __delitem__
+
+class Test_delitem(unittest.TestCase):
+
+    def setUp(self):
+        print "run " + self._testMethodName
+        self.kp = KeywordProcessor()
+
+    def tearDown(self):
+        print "OK"
+
+    def test_delitem(self):
+        self.kp.add_keyword('animal')
+        self.assertEqual(self.kp.__delitem__("animal"), True, "Unable to delete word")
+
+    def test_delitem_dict(self):
+        self.kp.add_keywords_from_dict(test_dictionary)
+        self.assertEqual(self.kp.__delitem__("1"), True, "Unable to delete word")
+
+    def test_delitem_list(self):
+        self.kp.add_keywords_from_list(test_list)
+        self.assertEqual(self.kp.__delitem__("This"), True, "Unable to delete word")
+
+
+# =================================================================== #
+
+
+# Class Test_add_non_word_boundary which tests function add_non_word_boundary
+
+class Test_add_non_word_boundary(unittest.TestCase):
+
+    def setUp(self):
+        print "run " + self._testMethodName
+        self.kp = KeywordProcessor()
+
+    def tearDown(self):
+        print "OK"
+
+    def test_add_non_word_boundary_default(self):
+        self.kp.add_keyword("is12")
+        self.kp.add_keyword("is")
+        found = self.kp.extract_keywords("wow this is12 a sentence")
+        self.assertTrue("is12" in found, "keyword can be letters and digits")
+        self.assertTrue("is" not in found, "keyword not in sentence")
+
+
+    def test_add_non_word_boundary_basic(self):
+        self.kp.set_non_word_boundaries(set())
+        self.kp.add_non_word_boundary(string.letters)
+        self.kp.add_keyword("is")
+        found = self.kp.extract_keywords("wow this is12 a sentence")
+        self.assertTrue("is" in found, "keyword doesnt include numbers")
+
+
+# =================================================================== #
+
+
+# Class Test_remove_keyword which tests function remove_keyword
+
+class Test_remove_keyword(unittest.TestCase):
+
+    def setUp(self):
+        print "run " + self._testMethodName
+        self.kp = KeywordProcessor()
+
+    def tearDown(self):
+        print "OK"
+
+    def test_remove_keyword_basic(self):
+        self.kp.add_keyword('animal')
+        self.assertEqual(self.kp.remove_keyword("animal"), True, "Could not remove word")
+
+    def Test_remove_keyword_empty(self):
+        self.kp.add_keyword('empty')
+        self.assertEqual(self.kp.remove_keyword(""), True, "Could not remove empty string")
+
+    def test_remove_keyword_dict(self):
+        self.kp.add_keywords_from_dict(test_dictionary)
+        self.assertEqual(self.kp.remove_keyword("1"), True, "Could not remove word")
+
+    def test_remove_keyword_list(self):
+        self.kp.add_keywords_from_list(test_list)
+        self.assertEqual(self.kp.remove_keyword("This"), True, "Could not remove word")
+
+
+# =================================================================== #
+
+
+# Class Test_add_keyword_from_file which tests function add_keyword_from_file
+
+class Test_add_keyword_from_file(unittest.TestCase):
+
+    def setUp(self):
+        print "run " + self._testMethodName
+        self.kp = KeywordProcessor()
+
+    def tearDown(self):
+        print "OK"
+
+    def test_add_keyword_from_file_basic(self):
+        self.kp.add_keyword_from_file('keyword_file.txt')
+        self.assertTrue("keyword" in self.kp, "Could not add word from file")
+        self.assertFalse("keyword" not in self.kp, "Could not add word from file")
+
+    def test_add_keyword_from_file_space(self):
+        self.kp.add_keyword_from_file('empty_file.txt')
+        self.assertTrue(" " in self.kp, "Could not add space from file")
+        self.assertFalse(" " not in self.kp, "Could not add space from file")
+
+
+# =================================================================== #
+
+
+# Class Test_remove_keywords_from_dict which tests function remove_keywords_from_dict
+
+class Test_remove_keywords_from_dict(unittest.TestCase):
+
+    def setUp(self):
+        print "run " + self._testMethodName
+        self.kp = KeywordProcessor()
+
+    def tearDown(self):
+        print "OK"
+
+    def test_remove_keywords_from_dict_basic(self):
+        self.kp.add_keywords_from_dict(test_dictionary)
+        self.kp.remove_keywords_from_dict({"This":["1"]})
+        self.assertFalse("This" in self.kp, "Could not remove keyword from dictionary")
+        self.assertTrue("This" not in self.kp, "Could not remove keyword from dictionary")
+
+
+# =================================================================== #
+
+
+# Class Test_remove_keywords_from_list which tests function remove_keywords_from_list
+
+class Test_remove_keywords_from_list(unittest.TestCase):
+
+    def setUp(self):
+        print "run " + self._testMethodName
+        self.kp = KeywordProcessor()
+
+    def tearDown(self):
+        print "OK"
+
+    def test_remove_keyword_from_list_basic(self):
+        self.kp.add_keywords_from_list(test_list)
+        self.kp.remove_keywords_from_list(["This"])
+        self.assertTrue("This" not in self.kp, "Could not remove keyword from list")
+        self.assertFalse("This" in self.kp, "Could not remove keyword from list")
+
+
+    def test_remove_keyword_from_list_extended(self):
+        self.kp.add_keywords_from_list(test_list)
+        self.kp.remove_keywords_from_list(["This","is"])
+        self.assertTrue("This" not in self.kp, "Could not remove keyword from list")
+        self.assertFalse("This" in self.kp, "Could not remove keyword from list")
+        self.assertTrue("is" not in self.kp, "Could not remove keyword from list")
+        self.assertFalse("is" in self.kp, "Could not remove keyword from list")
+
+    def test_remove_keyword_from_list_empty(self):
+        self.kp.add_keywords_from_list(test_list)
+        self.kp.remove_keywords_from_list([])
+        self.assertTrue("This" in self.kp, "Could not remove empty list")
+
+
+# =================================================================== #
+
+
+# CLass Test_extract_keywords which tests function extract_keywords
+
+class Test_extract_keywords(unittest.TestCase):
+
+    def setUp(self):
+        print "run " + self._testMethodName
+        self.kp = KeywordProcessor()
+
+    def tearDown(self):
+        print "OK"
+
+    def test_extract_keywords_basic(self):
+        self.kp.add_keyword('dogs','animal')
+        self.kp.add_keyword('cats')
+        self.assertEqual(self.kp.extract_keywords('I love cats and dogs.'), ['cats','animal'], "Could not extract keywords")
+
+    def test_extract_keywords_dict(self):
+        self.kp.add_keywords_from_dict(test_dictionary)
+        self.assertEqual(self.kp.extract_keywords('1 2 4'), ['This','is','testing'], "Could not extract keywords from dictionary")
+
+    def test_extract_keywords_empty(self):
+        self.kp.add_keyword('')
+        self.assertEqual(self.kp.extract_keywords('Keyword'), [], "Could not extract keyword from empty list")
+
+    def test_extract_keywords_empty_extended(self):
+        self.kp.add_keyword('empty')
+        self.assertEqual(self.kp.extract_keywords(''), [], "Could not extract empty list")
+
+    def test_extract_keywords_list(self):
+        self.kp.add_keywords_from_list(test_list)
+        self.assertEqual(self.kp.extract_keywords('This could be for testing list'), ['This','for','testing'], "Could not extract from list")
+
+    def test_extract_keywords_file(self):
+        self.kp.add_keyword_from_file('keyword_file.txt')
+        self.assertEqual(self.kp.extract_keywords('This is a keyword'), ['file'], "Could not extract word from file")
+
+
+# =================================================================== #
+
 
 class TestFlashtext_init(unittest.TestCase):
     """
     Since init only does internal things, we cannot test it with black box testing.
     """
 
+
 # =================================================================== #
+
 
 class TestFlashtext_contains(unittest.TestCase):
 
@@ -136,6 +365,7 @@ class TestFlashtext_contains(unittest.TestCase):
 
 # =================================================================== #
 
+
 class TestFlashtext_setitem(unittest.TestCase):
 
 
@@ -175,6 +405,7 @@ class TestFlashtext_setitem(unittest.TestCase):
 
 # =================================================================== #
 
+
 class TestFlashtext_set_non_word_boundaries(unittest.TestCase):
 
     def setUp(self):
@@ -203,9 +434,9 @@ class TestFlashtext_set_non_word_boundaries(unittest.TestCase):
         found = self.kp.extract_keywords("wow this is12 a sentence")
         self.assertTrue("is" in found, "keyword doesnt include numbers")
 
-    # TODO Extreme?
 
 # =================================================================== #
+
 
 class TestFlashtext_add_get_keyword(unittest.TestCase):
 
@@ -256,12 +487,15 @@ class TestFlashtext_add_get_keyword(unittest.TestCase):
 
 # =================================================================== #
 
+
 # class TestFlashtext_get_keyword(unittest.TestCase):
 """
 Testing this functionallity in the test class TestFlashtext_add_get_keyword above.
 """
 
+
 # =================================================================== #
+
 
 class TestFlashtext_add_keywords_from_dict(unittest.TestCase):
 
@@ -300,6 +534,7 @@ class TestFlashtext_add_keywords_from_dict(unittest.TestCase):
 
 
 # =================================================================== #
+
 
 class TestFlashtext_add_keywords_from_list(unittest.TestCase):
 
@@ -344,6 +579,7 @@ class TestFlashtext_add_keywords_from_list(unittest.TestCase):
 
 # =================================================================== #
 
+
 class TestFlashtext_get_all_keywords(unittest.TestCase):
 
 
@@ -378,6 +614,7 @@ class TestFlashtext_get_all_keywords(unittest.TestCase):
 
 
 # =================================================================== #
+
 
 class TestFlashtext_replace(unittest.TestCase):
 
