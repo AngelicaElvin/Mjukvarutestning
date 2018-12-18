@@ -64,11 +64,9 @@ class TestFlashtext_init(unittest.TestCase):
     Since init only does internal things, we cannot test it with black box testing.
     """
 
-
 # =================================================================== #
 
 class TestFlashtext_contains(unittest.TestCase):
-
 
     def setUp(self):
         self.kp = KeywordProcessor()
@@ -96,7 +94,8 @@ class TestFlashtext_contains(unittest.TestCase):
 
     def test_contains_extreme(self):
         """
-        Check that the contains function correctly handles extreme cases.
+        Check that the contains function correctly handles extreme cases such 
+        as long keywords.
         """
         # Borderline: Long string
         self.kp.add_keyword(long_string)
@@ -116,7 +115,7 @@ class TestFlashtext_contains(unittest.TestCase):
 
     def test_contains_from_dict(self):
         """
-        Does it handle dicts correctly?
+        Check that keywords are correctly added when added from a dictionary.
         """
         # Normal: clean word using dicts
         keyword_dict = {"color": ["red", "green"]}
@@ -127,7 +126,7 @@ class TestFlashtext_contains(unittest.TestCase):
 
     def test_contains_from_list(self):
         """
-        Does it handle lists correctly?
+        Check that keywords are correctly added when added from a list.
         """
         # Normal: keyword from list
         self.kp.add_keywords_from_list(["brown", "orange"])
@@ -146,7 +145,7 @@ class TestFlashtext_setitem(unittest.TestCase):
 
     def test_setitem_basic(self):
         """
-        Test a typical usage scenario.
+        Test a typical usage scenario with normal length keywords.
         """
         self.kp["foo"] = "bar"
         self.assertTrue("foo" in self.kp, "we added a keyword")
@@ -165,7 +164,8 @@ class TestFlashtext_setitem(unittest.TestCase):
 
     def test_setitem_extreme(self):
         """
-        Check that it functions correctly with extreme cases.
+        Check that it functions correctly with extreme cases such as long 
+        keywords.
         """
         # Borderline: Long string
         self.kp[long_string] = long_string
@@ -182,7 +182,8 @@ class TestFlashtext_set_non_word_boundaries(unittest.TestCase):
 
     def test_set_non_word_boundaries_default(self):
         """
-        Test the default behaviour, typical usage scenario.
+        Test the default behaviour, typical usage scenario. Full keywords and 
+        not partial keywords should be found when extracting text.
         """
         self.kp.add_keyword("is12")
         self.kp.add_keyword("is")
@@ -193,7 +194,9 @@ class TestFlashtext_set_non_word_boundaries(unittest.TestCase):
 
     def test_set_non_word_boundaries_basic(self):
         """
-        Test with a non-default boundary.
+        Test with a non-default boundary. This involves changing what is 
+        considered a delimiting characters. Now the partial word SHOULD be 
+        found.
         """
         self.kp.set_non_word_boundaries(set(string.letters))
         self.kp.add_keyword("is")
@@ -232,7 +235,8 @@ class TestFlashtext_add_get_keyword(unittest.TestCase):
 
     def test_add_keyword_clean_basic(self):
         """
-        Test that the optional feature clean word is working in a typical use case.
+        Test that the optional feature clean word is working in a typical use 
+        case.
         """
         self.kp.add_keyword("foo", "bar")
         self.assertTrue(self.kp["foo"] is "bar", "bar is clean word for foo")
@@ -240,7 +244,8 @@ class TestFlashtext_add_get_keyword(unittest.TestCase):
 
     def test_add_keyword_clean_extreme(self):
         """
-        Test that the optional feature clean word is working in an extreme use case.
+        Test that the optional feature clean word is working in an extreme use 
+        case. Again with an empty and a long string.
         """
         self.kp.add_keyword("", "")
         self.assertTrue(len(self.kp) is 0, "cannot add empty string")
@@ -267,7 +272,8 @@ class TestFlashtext_add_keywords_from_dict(unittest.TestCase):
 
     def test_add_keywords_from_dict_basic(self):
         """
-        Test a typical usage scenario.
+        Test a typical usage scenario. This is done with words of common length
+        and that is typical to occur in texts.
         """
         self.kp.add_keywords_from_dict({"color": ["yellow", "red"]})
         self.assertTrue("yellow" in self.kp, "yellow was added as a keyword")
@@ -347,7 +353,8 @@ class TestFlashtext_get_all_keywords(unittest.TestCase):
 
     def test_get_all_keywords_basic(self):
         """
-        Test a typical usage scenario.
+        Test a typical usage scenario. List of common keywords should all be 
+        correctly retrievable from processor that they were added to.
         """
         basic_list = ["one", "two", "three"]
         self.kp.add_keywords_from_list(basic_list)
@@ -381,7 +388,8 @@ class TestFlashtext_replace(unittest.TestCase):
 
     def test_replace_normal(self):
         """
-        Test a typical usage scenario.
+        Test a typical usage scenario that may occur when replacing text. This 
+        involves common, none-empty keywords.
         """
         # Normal: Replace ONE word
         self.kp["Crabs"] = "Trolls"
